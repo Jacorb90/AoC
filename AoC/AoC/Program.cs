@@ -2,4 +2,4 @@
 
 DayManager.Setup();
 
-DayManager.Run(2023, 8, true);
+DayManager.Run(2023, 9, true);
