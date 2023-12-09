@@ -45,5 +45,15 @@ namespace AoC.Util
         {
             return (a * b) / a.GCD(b);
         }
+
+        public static double Prod<T>(this IEnumerable<T> source, Func<T, double> mapping)
+        {
+            var ret = 1d;
+            foreach (var item in source)
+            {
+                ret *= mapping(item);
+            }
+            return ret;
+        }
     }
 }

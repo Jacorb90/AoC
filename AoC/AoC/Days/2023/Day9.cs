@@ -11,57 +11,28 @@ namespace AoC.Days._2023
     [Day(2023, 9)]
     public class Day9 : IDay
     {
+        private static double Extrapolate(int index, IEnumerable<int> seq)
+        {
+            var withIndices = seq.Select((y, i) => (y, i));
+            return withIndices.Sum(pair1 => withIndices.Prod(pair2 => pair2.i == pair1.i ? pair1.y : (index - pair2.i)) / withIndices.Prod(pair2 => pair2.i == pair1.i ? 1d : (pair1.i - pair2.i)));
+        }
+
         public string Part1(string input)
         {
-            var histories = input.Lines().Select(line =>
+            return ((long)input.Lines().Select(line =>
             {
-                var diffs = new List<List<int>>() { line.Split(' ').Select(int.Parse).ToList() };
-
-                while (!diffs.Last().All(d => d == 0))
-                {
-                    diffs.Add(diffs.Last().Skip(1).Select((d, i) => d - diffs.Last()[i]).ToList());
-                }
-
-                diffs.Last().Add(0);
-
-                for (int i=diffs.Count-2; i>=0; i--)
-                {
-                    diffs[i].Add(diffs[i].Last() + diffs[i + 1].Last());
-                }
-
-                return diffs.First().Last();
-            });
-
-            return histories.Sum().ToString();
+                var l = line.Split(' ').Select(int.Parse);
+                return Extrapolate(l.Count(), l);
+            }).Sum()).ToString();
         }
 
         public string Part2(string input)
         {
-            var histories = input.Lines().Select(line =>
+            return ((long)input.Lines().Select(line =>
             {
-                var diffs = new List<List<int>>() { line.Split(' ').Select(int.Parse).ToList() };
-
-                while (!diffs.Last().All(d => d == 0))
-                {
-                    diffs.Add(diffs.Last().Skip(1).Select((d, i) => d - diffs.Last()[i]).ToList());
-                }
-
-                foreach (var d in diffs)
-                {
-                    d.Reverse();
-                }
-
-                diffs.Last().Add(0);
-
-                for (int i = diffs.Count - 2; i >= 0; i--)
-                {
-                    diffs[i].Add(diffs[i].Last() - diffs[i + 1].Last());
-                }
-
-                return diffs.First().Last();
-            });
-
-            return histories.Sum().ToString();
+                var l = line.Split(' ').Select(int.Parse);
+                return Extrapolate(-1, l);
+            }).Sum()).ToString();
         }
     }
 }
