@@ -31,6 +31,11 @@ namespace AoC.Util
             return source.Where(condition).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
 
+        public static Dictionary<T, U> DictSelect<T, S, U>(this Dictionary<T, S> source, Func<KeyValuePair<T, S>, U> mapping) where T : notnull
+        {
+            return source.Select(kvp => (kvp.Key, Map: mapping(kvp))).ToDictionary(pair => pair.Key, pair => pair.Map);
+        }
+
         public static long GCD(this long a, long b)
         {
             while (b != 0)
