@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -46,14 +47,9 @@ namespace AoC.Util
             return (a * b) / a.GCD(b);
         }
 
-        public static double Prod<T>(this IEnumerable<T> source, Func<T, double> mapping)
+        public static T Prod<T>(this IEnumerable<T> source) where T : INumber<T>
         {
-            var ret = 1d;
-            foreach (var item in source)
-            {
-                ret *= mapping(item);
-            }
-            return ret;
+            return source.Aggregate((a, c) => a * c);
         }
     }
 }

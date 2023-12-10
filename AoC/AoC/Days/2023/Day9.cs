@@ -14,12 +14,12 @@ namespace AoC.Days._2023
         private static double Extrapolate(int index, IEnumerable<int> seq)
         {
             var withIndices = seq.Select((y, i) => (y, i));
-            return withIndices.Sum(pair1 => withIndices.Prod(pair2 => pair2.i == pair1.i ? pair1.y : (index - pair2.i)) / withIndices.Prod(pair2 => pair2.i == pair1.i ? 1d : (pair1.i - pair2.i)));
+            return withIndices.Sum(pair1 => withIndices.Select(pair2 => pair2.i == pair1.i ? pair1.y : (double)(index - pair2.i) / (pair1.i - pair2.i)).Prod());
         }
 
         public string Part1(string input)
         {
-            return ((long)input.Lines().Select(line =>
+            return Math.Round(input.Lines().Select(line =>
             {
                 var l = line.Split(' ').Select(int.Parse);
                 return Extrapolate(l.Count(), l);
@@ -28,11 +28,7 @@ namespace AoC.Days._2023
 
         public string Part2(string input)
         {
-            return ((long)input.Lines().Select(line =>
-            {
-                var l = line.Split(' ').Select(int.Parse);
-                return Extrapolate(-1, l);
-            }).Sum()).ToString();
+            return Math.Round(input.Lines().Select(line => Extrapolate(-1, line.Split(' ').Select(int.Parse))).Sum()).ToString();
         }
     }
 }
